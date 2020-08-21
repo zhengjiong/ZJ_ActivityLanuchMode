@@ -12,6 +12,7 @@ class ThirdActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_thrid)
+        println("onCreate")
 
         toolbar.title = "Third Activity"
 
@@ -36,7 +37,7 @@ class ThirdActivity : AppCompatActivity() {
         }
 
         /**
-         * 1.FLAG_ACTIVITY_SINGLE_TOP单独使用是没有效果的,必须和Intent.FLAG_ACTIVITY_CLEAR_TOP配合使用
+         * 1.FLAG_ACTIVITY_SINGLE_TOP如果启动其他Activity单独使用是没有效果的,必须和Intent.FLAG_ACTIVITY_CLEAR_TOP配合使用
          * 2.FLAG_ACTIVITY_CLEAR_TOP可以单独使用, 效果是对目标activity之上的全部清空,然后自己也onDestroy,并重新启动一个自己
          * 3.FLAG_ACTIVITY_CLEAR_TOP 和 FLAG_ACTIVITY_SINGLE_TOP 一起使用的话,会查找栈中是否已经存在目标activity
          * 如果存在则直接跳转到目标activity(并不会onDestroy和onCreate),并清空目标activity之上的所有activity,如果不存在则创建并
@@ -52,6 +53,13 @@ class ThirdActivity : AppCompatActivity() {
             startActivity(intent1)
             startActivity(intent2)
             startActivity(intent3)
+        }
+
+
+        btn3.setOnClickListener {
+            val intent = Intent(this, ThirdActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            startActivity(intent)
         }
     }
 
@@ -69,5 +77,10 @@ class ThirdActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        println("onNewIntent")
     }
 }
